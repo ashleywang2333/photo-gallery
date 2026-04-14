@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>个人摄影作品展示</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <nav class="navbar">
+    <div class="container">
+      <div class="nav-left">
+        <div class="logo">
+          <svg class="camera-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="3" y="5" width="18" height="14" rx="2" stroke="#d4af37" stroke-width="2"/>
+            <circle cx="12" cy="12" r="4" stroke="#d4af37" stroke-width="2"/>
+            <rect x="8" y="3" width="8" height="2" rx="1" fill="#d4af37"/>
+            <circle cx="16" cy="8" r="1" fill="#d4af37"/>
+          </svg>
+          <span class="logo-text">晴子的视觉世界</span>
+        </div>
+      </div>
+      <ul class="nav-links">
+        <li><a href="index.html" class="active">首页</a></li>
+        <li><a href="portfolio.html">作品集</a></li>
+        <li><a href="contact.html">关于我</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <main>
+    <section class="hero">
+      <div class="container">
+        <h1>捕捉瞬间，留住永恒</h1>
+        <p>
+          摄影是一种感受、触摸和爱的方式。
+          <span class="quote-author">——亚伦·西斯金德</span>
+        </p>
+      </div>
+    </section>
+
+    <section class="gallery">
+      <div class="container">
+        <h2>个人作品</h2>
+        <div class="carousel">
+          <div class="carousel-inner">
+            <div class="carousel-item active">
+              <img src="images/carousel/image01.jpg" alt="作品1" class="gallery-image" loading="lazy">
+            </div>
+            <div class="carousel-item">
+              <img src="images/carousel/image02.jpg" alt="作品2" class="gallery-image" loading="lazy">
+            </div>
+            <div class="carousel-item">
+              <img src="images/carousel/image03.jpg" alt="作品3" class="gallery-image" loading="lazy">
+            </div>
+            <div class="carousel-item">
+              <img src="images/carousel/image04.jpg" alt="作品4" class="gallery-image" loading="lazy">
+            </div>
+            <div class="carousel-item">
+              <img src="images/carousel/image05.jpg" alt="作品5" class="gallery-image" loading="lazy">
+            </div>
+            <div class="carousel-item">
+              <img src="images/carousel/image06.JPG" alt="作品6" class="gallery-image" loading="lazy">
+            </div>
+            <div class="carousel-item">
+              <img src="images/carousel/image07.jpg" alt="作品7" class="gallery-image" loading="lazy">
+            </div>
+            <div class="carousel-item">
+              <img src="images/carousel/image08.jpg" alt="作品8" class="gallery-image" loading="lazy">
+            </div>
+            <div class="carousel-item">
+              <img src="images/carousel/image09.jpg" alt="作品9" class="gallery-image" loading="lazy">
+            </div>
+            <div class="carousel-item">
+              <img src="images/carousel/image10.JPG" alt="作品10" class="gallery-image" loading="lazy">
+            </div>
+            <div class="carousel-item">
+              <img src="images/carousel/image11.jpg" alt="作品11" class="gallery-image" loading="lazy">
+            </div>
+            <div class="carousel-item">
+              <img src="images/carousel/image12.jpg" alt="作品12" class="gallery-image" loading="lazy">
+            </div>
+          </div>
+          <button class="carousel-control prev">&lt;</button>
+          <button class="carousel-control next">&gt;</button>
+          <div class="carousel-indicators">
+            <button class="active"></button>
+            <button></button>
+            <button></button>
+            <button></button>
+            <button></button>
+            <button></button>
+            <button></button>
+            <button></button>
+            <button></button>
+            <button></button>
+            <button></button>
+            <button></button>
+          </div>
+        </div>
+
+        <!-- 图片预览模态框 -->
+        <div class="modal" id="imageModal">
+          <span class="close">&times;</span>
+          <img class="modal-content" id="modalImage">
+        </div>
+      </div>
+    </section>
+
+    <script>
+      // 轮播功能
+      const carousel = document.querySelector('.carousel');
+      const carouselItems = document.querySelectorAll('.carousel-item');
+      const prevBtn = document.querySelector('.carousel-control.prev');
+      const nextBtn = document.querySelector('.carousel-control.next');
+      const indicators = document.querySelectorAll('.carousel-indicators button');
+      let currentIndex = 0;
+      let interval;
+
+      function showSlide(index) {
+        // 重置所有幻灯片
+        carouselItems.forEach(item => {
+          item.classList.remove('active', 'prev', 'next', 'hidden');
+        });
+        indicators.forEach(indicator => indicator.classList.remove('active'));
+        
+        // 计算前一张和后一张的索引
+        const prevIndex = (index - 1 + carouselItems.length) % carouselItems.length;
+        const nextIndex = (index + 1) % carouselItems.length;
+        
+        // 更新当前幻灯片
+        carouselItems[index].classList.add('active');
+        
+        // 更新前一张和后一张
+        carouselItems[prevIndex].classList.add('prev');
+        carouselItems[nextIndex].classList.add('next');
+        
+        // 隐藏其他幻灯片
+        carouselItems.forEach((item, i) => {
+          if (i !== index && i !== prevIndex && i !== nextIndex) {
+            item.classList.add('hidden');
+          }
+        });
+        
+        // 更新指示器
+        indicators[index].classList.add('active');
+        
+        currentIndex = index;
+      }
+
+      function nextSlide() {
+        let nextIndex = currentIndex + 1;
+        if (nextIndex >= carouselItems.length) {
+          nextIndex = 0;
+        }
+        showSlide(nextIndex);
+      }
+
+      function prevSlide() {
+        let prevIndex = currentIndex - 1;
+        if (prevIndex < 0) {
+          prevIndex = carouselItems.length - 1;
+        }
+        showSlide(prevIndex);
+      }
+
+      // 自动轮播
+      function startAutoSlide() {
+        interval = setInterval(nextSlide, 5000);
+      }
+
+      // 事件监听
+      nextBtn.addEventListener('click', () => {
+        clearInterval(interval);
+        nextSlide();
+        startAutoSlide();
+      });
+
+      prevBtn.addEventListener('click', () => {
+        clearInterval(interval);
+        prevSlide();
+        startAutoSlide();
+      });
+
+      indicators.forEach((indicator, index) => {
+        indicator.addEventListener('click', () => {
+          clearInterval(interval);
+          showSlide(index);
+          startAutoSlide();
+        });
+      });
+
+      // 开始自动轮播
+      startAutoSlide();
+
+      // 图片点击放大功能
+      const modal = document.getElementById('imageModal');
+      const modalImg = document.getElementById('modalImage');
+      const closeBtn = document.querySelector('.close');
+      const galleryImages = document.querySelectorAll('.gallery-image');
+
+      galleryImages.forEach(img => {
+        img.addEventListener('click', function() {
+          modal.style.display = 'flex';
+          modalImg.src = this.src;
+        });
+      });
+
+      closeBtn.addEventListener('click', function() {
+        modal.style.display = 'none';
+      });
+
+      window.addEventListener('click', function(event) {
+        if (event.target == modal) {
+          modal.style.display = 'none';
+        }
+      });
+    </script>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <p>&copy; 2026 个人摄影作品集</p>
+    </div>
+  </footer>
+</body>
+</html>
